@@ -17,7 +17,7 @@ public class LockedMe {
 			path1 = defPath;
 		}else {
 			path1 = Path.of(path);
-			System.out.println(Files.exists(path1));
+			//System.out.println(Files.exists(path1));
 		}
 	}
 	

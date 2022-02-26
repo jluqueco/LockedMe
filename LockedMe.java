@@ -25,16 +25,10 @@ public class LockedMe {
 		}
 	}
 	
-	/**
-	 * @return the path1
-	 */
 	public Path getPath1() {
 		return path1;
 	}
 
-	/**
-	 * @return the defPath
-	 */
 	public Path getDefPath() {
 		return defPath;
 	}
@@ -100,13 +94,42 @@ public class LockedMe {
 	}
 
 	public void search(String fileName) {
-		Path filePath = Paths.get(path1.toString(), fileName);
+		String[] fileArray = null;
 		
-		if(Files.exists(filePath)) {
-			System.out.println("\nFile " + filePath +  "\" was found.");
-		}else {
-			System.out.println("\nFile " + filePath +  "\" was not found.");
+		try(Stream<Path> s = Files.list(path1)){
+			fileArray = s.map(x -> x.getFileName().toString()).toArray(String[]::new);
+			
+			bubbleSort(fileArray);
+			
+		} catch (IOException e) {
+			System.err.println("Error at reading files");
 		}
 		
+		if (binarySearch(fileArray, fileName) >= 0) {
+			System.out.println("\nFile " + fileName + " has been found");
+		}else {
+			System.out.println("\nFile " + fileName + " has not been found");
+		}
+	}
+	
+	private int binarySearch(String arr[], String value) {
+		int start = 0;
+		int end = arr.length - 1;
+		int middle = (start+end)/2;
+		
+		while(!(arr[middle].equals(value)) && start <= middle) {
+			if(value.compareToIgnoreCase(arr[middle]) < 0) {	
+				end = middle - 1;
+			}else {
+				start = middle + 1;
+			}
+			middle = (start+end)/2;
+		}
+		
+		if(!arr[middle].equals(value)) {
+			return -1;
+		}
+		
+		return middle;
 	}
 }

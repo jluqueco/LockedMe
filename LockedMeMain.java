@@ -17,9 +17,9 @@ public class LockedMeMain {
 		int option = 0;
 		
 		System.out.println("****Welcome to LockeMe.com****");
-		System.out.println("\nPlease enter the path for the main folder or enter -1 to use a default one.");
+
 		//path = sc.next();
-		path = 	"./Default";		//"/home/eclipse-workspace/LockedMe/src/lockedme/LockedMe.java";
+		path = 	"./Default";
 		
 		while(ind){
 			if(Files.exists(Path.of(path))) {
@@ -28,7 +28,6 @@ public class LockedMeMain {
 				System.out.println("\nPath: \"" + lock.getPath1().toString() + "\" has been selected\n");
 			}else {
 				System.out.println("invalid path, please try again.");
-				System.out.println("Please enter the path for the main folder or enter -1 to use a default one.");
 			}
 		}
 		
@@ -41,8 +40,32 @@ public class LockedMeMain {
 				sc = new Scanner(System.in);
 			}
 			
-			if(validateOption(option)) {
-				
+			if(validateOption(option,1,4)) {
+				switch(option) {
+					case 1 :
+						System.out.println("\nFolder Contents:");
+						lock.listContents();
+						break;
+					case 2 :
+						while(option != 3) {
+							System.out.println(operations());
+							try{
+								option = sc.nextInt();
+							}catch(InputMismatchException e) {
+								option = -1;
+								sc = new Scanner(System.in);
+							}
+							while(!validateOption(option, 1, 3)) {
+								System.out.println("\nPlease select a correct option");
+							}
+							if(option != 3) {
+								lock.operation(option, fileName());
+							}
+						}
+						break;
+					case 3:
+						lock.search(fileName());
+				}
 			}else {
 				System.out.println("\nPlease enter a correct option, try again!\n");
 			}
@@ -52,9 +75,24 @@ public class LockedMeMain {
 		
 	}
 	
-	private static boolean validateOption(int option) {
+	private static String fileName() {
+		Scanner fn = new Scanner(System.in);
+		System.out.println("Please enter the filename: ");
+		
+		return fn.nextLine();
+	}
+
+	private static String operations() {
+		StringBuilder sb = new StringBuilder();
+		
+		return sb.append("\nSelect the option: \n\n").append("\t1. Add File\n")
+				.append("\t2. Delete a file.\n").append("\t3. Return to Main Menu").toString();
+		
+	}
+
+	private static boolean validateOption(int option, int min, int max) {
 		// TODO Auto-generated method stub
-		if(option > 0 && option < 5) {
+		if(option >= min && option <= max) {
 			return true;
 		}else{
 			return false;
@@ -85,7 +123,7 @@ public class LockedMeMain {
 	private static String printMainMenu() {
 		StringBuilder sb = new StringBuilder();
 		
-		return sb.append("Select the option in the menu by pressing the respective number: \n\n").append("\t1. List Files\n")
+		return sb.append("\nSelect the option in the menu by pressing the respective number: \n\n").append("\t1. List Files\n")
 				.append("\t2. File Operations.\n").append("\t3. Search File.\n").append("\t4. Exit.").toString();
 	}
 

@@ -19,7 +19,8 @@ public class LockedMeMain {
 		System.out.println("****Welcome to LockeMe.com****");
 
 		//path = sc.next();
-		path = 	"./Default";
+		path = 	"../../Default";
+		
 		
 		while(ind){
 			if(Files.exists(Path.of(path))) {
@@ -27,13 +28,21 @@ public class LockedMeMain {
 				ind = false;
 				System.out.println("\nPath: \"" + lock.getPath1().toString() + "\" has been selected\n");
 			}else {
-				System.out.println("invalid path, please try again.");
+				System.out.println("invalid path, folder will be automatically created.");
+				try {
+					Files.createDirectories(Path.of(path));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
+		
 		
 		while(option != 4) {
 			System.out.println(printMainMenu());
 			try{
+				
 				option = sc.nextInt();
 			}catch(InputMismatchException e) {
 				option = -1;

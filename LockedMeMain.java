@@ -18,7 +18,6 @@ public class LockedMeMain {
 		
 		System.out.println("****Welcome to LockeMe.com****");
 
-		//path = sc.next();
 		path = 	"../../Default";
 		
 		
